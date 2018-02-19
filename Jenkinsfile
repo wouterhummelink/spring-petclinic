@@ -1,11 +1,11 @@
 def pom = null
 pipeline {
-  agent {
-    kubernetes {
+  agent any //{
+    //kubernetes {
     // docker image maven:3.5
     // docker image docker with bind mount -or- buildah bud in privileged container
-    }
-  }
+    //}
+  //}
   stages {
     stage("Build") {
       steps {
@@ -25,8 +25,8 @@ pipeline {
     }
     stage("Create docker image") {
       // version = <POM_VERSION>?
-      docker build -t <repository-url>/<username>/<imagename>:<version>-<jenkins-buildnumber> .
-      docker push 
+      sh "docker build -t <repository-url>/<username>/<imagename>:<version>-<jenkins-buildnumber> ."
+      sh "docker push" 
     }
     stage("Deploy to staging") {
       // TODO: insert version number into deployment
