@@ -1,0 +1,22 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: spring-petclinic
+  namespace: petclinic-staging
+  labels:
+     app: spring-petclinic
+     lifecycle: staging
+     version: __VERSION__
+spec:
+  template:
+    spec:
+      containers:
+      - name: spring-petclinic
+        image: whummelink/spring-petclinic:__VERSION__
+        ports:
+          - name: http
+            protocol: TCP
+            containerPort: 8080
+      #volumes:
+  
