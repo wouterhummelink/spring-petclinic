@@ -21,21 +21,15 @@ pipeline {
         junit "target/surefire-reports/*.xml"
       }
     }
-    stage("Smoke test") {
-      steps {
-        script {
-        // make sure it runs
-          def version = pom.getVersion()
-          sh "java -jar target/spring-petclinic-${version}.jar --server.port=59234 &"
-        }
-      }
-    }
     stage("Create docker image") {
       steps {
         script {
           def version = pom.getVersion()
-          sh "docker build -t ${DOCKER_REGISTRY}/${DOCKER_USERNAME}/${DOCKER_IMAGE}:${POM_VERSION}-${JENKINS_BUILD} ."
-          sh "docker push"
+          withEnv(["DOCKER_REGISTRY=docker.io","DOCKER_IMAGE=spring-petclinic", "POM_VERSION=${version}"]) {
+            sh "sudo buildah bud -t ${DOCKER_IMAGE}:${POM_VERSION}-${JENKINS_BUILD} ."
+            withCredentials(credentialsId: "docker-login", usernameVariable: "DOCKER_USERNAME", passwordVariable: "DOCKER_PASSWORD"
+            sh 'sudo buildah push --creds="${DOCKER_USERNAME}:${DOCKER_PASSWORD}" ${DOCKER_IMAGE}:${POM_VERSION}-${JENKINS_BUILD} docker://${DOCKER_REGISTRY}/${DOCKER_USERNAME}/${DOCKER_IMAGE}:${POM_VERSION}-${JENKINS_BUILD}'
+          }
         }
       }
     }
@@ -47,7 +41,8 @@ pipeline {
     }
     stage("Test deployment in staging") {
       steps {
-        sh "curl http://petclinic-staging.staging.svc.cluster.local:8080"
+        sh "curl http://petclinic-svc.petclinic-staging.svc.cluster.local:8080"
+        // RUN a performance test using eg. Gatling here
       }
     }
     stage("Deploy to prod") {
