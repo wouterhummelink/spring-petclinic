@@ -7,5 +7,5 @@ ADD target/spring-petclinic-${version}.jar /spring-petclinic-${version}.jar
 
 EXPOSE [8080]
 
-ENTRYPOINT ["/usr/bin/bash","-c" "/usr/bin/java -jar /spring-petclinic-${VERSION}.jar"]
+ENTRYPOINT ["/usr/bin/java","-jar","/spring-petclinic-${VERSION}.jar"]
 
