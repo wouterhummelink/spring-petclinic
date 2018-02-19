@@ -16,28 +16,40 @@ pipeline {
       }
     }
     stage("Test") {
+      steps {
       sh "mvn test"
       junit "target/surefire-reports/*.xml"
     }
     stage("Smoke test") {
+      steps {
       // make sure it runs
       sh "mvn spring-boot:start"
     }
     stage("Create docker image") {
-      // version = <POM_VERSION>?
-      sh "docker build -t <repository-url>/<username>/<imagename>:<version>-<jenkins-buildnumber> ."
-      sh "docker push" 
+      steps {
+        script {
+          def version = pom.getVersion()
+          sh "docker build -t ${DOCKER_REGISTRY}/${DOCKER_USERNAME}/${DOCKER_IMAGE}:${POM_VERSION}-${JENKINS_BUILD} ."
+          sh "docker push"
+        }
+      }
     }
     stage("Deploy to staging") {
-      // TODO: insert version number into deployment
-      sh "kubectl apply -f staging/pet-clinic-deployment.yml"
+      steps {
+        // TODO: insert version number into deployment
+        sh "kubectl apply -f staging/pet-clinic-deployment.yml"
+      }
     }
     stage("Test deployment in staging") {
-      sh "curl http://petclinic-staging.staging.svc.cluster.local:8080"
+      steps {
+        sh "curl http://petclinic-staging.staging.svc.cluster.local:8080"
+      }
     }
     stage("Deploy to prod") {
-      // TODO: insert version number into deployment
-      sh "kubectl apply -f production/pet-clinic-deployment.yml"
+      steps {
+        // TODO: insert version number into deployment
+        sh "kubectl apply -f production/pet-clinic-deployment.yml"
+      }
     }
   }
   // mvn build
