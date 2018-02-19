@@ -1,0 +1,7 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: petclinic-staging
+  name: petclinic-svc
+spec:
