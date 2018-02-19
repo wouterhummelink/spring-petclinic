@@ -23,8 +23,11 @@ pipeline {
     }
     stage("Smoke test") {
       steps {
+        script {
         // make sure it runs
-        sh "./mvnw spring-boot:start"
+          def version = pom.getVersion()
+          sh "java -jar target/spring-petclinic-${version}.jar --server.port=59234"
+        }
       }
     }
     stage("Create docker image") {
