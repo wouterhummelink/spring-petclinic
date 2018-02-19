@@ -9,6 +9,7 @@ metadata:
     lifecycle: staging
     version: __VERSION__
 spec:
+ 
   selector:
     matchLabels:
       app: spring-petclinic
@@ -16,6 +17,11 @@ spec:
       version: __VERSION__
   template:
     spec:
+      metadata:
+        labels:
+          app: spring-petclinic
+          lifecycle: staging
+          version: __VERSION__
       containers:
       - name: spring-petclinic
         image: whummelink/spring-petclinic:__VERSION__
