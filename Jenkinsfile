@@ -26,7 +26,7 @@ pipeline {
         script {
         // make sure it runs
           def version = pom.getVersion()
-          sh "java -jar target/spring-petclinic-${version}.jar --server.port=59234"
+          sh "java -jar target/spring-petclinic-${version}.jar --server.port=59234 &"
         }
       }
     }
