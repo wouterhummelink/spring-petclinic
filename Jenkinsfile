@@ -1,5 +1,6 @@
 // vim: ft=groovy
 def pom = null
+def version = null
 pipeline {
   agent any //{
     //kubernetes {
@@ -12,6 +13,7 @@ pipeline {
       steps {
         script {
           pom = readMavenPom file: 'pom.xml'
+          version = pom.getVersion()
         }
         sh "./mvnw package -DskipTests"
       }
@@ -25,7 +27,6 @@ pipeline {
     stage("Create docker image") {
       steps {
         script {
-          def version = pom.getVersion()
           withEnv(["DOCKER_REGISTRY=docker.io","DOCKER_IMAGE=spring-petclinic", "POM_VERSION=${version}"]) {
             sh 'sudo buildah bud -t ${DOCKER_IMAGE}:${POM_VERSION}-${BUILD_NUMBER} .'
             withCredentials([usernamePassword(credentialsId: "docker-login", usernameVariable: "DOCKER_USERNAME", passwordVariable: "DOCKER_PASSWORD")]) {
@@ -38,11 +39,13 @@ pipeline {
     stage("Deploy to staging") {
       steps {
         // TODO: insert version number into deployment
-        sh "kubectl apply -f staging/pet-clinic-deployment.yml"
+        sh "sed 's/__VERSION__/${version}-{currentBuild.number}/' staging/pet-clinic-deployment.yml | kubectl apply -f -" 
+        sh "kubectl rollout status -n petclinic-staging deploy/spring-petclinic"
       }
     }
     stage("Test deployment in staging") {
       steps {
+        
         sh "curl http://petclinic-svc.petclinic-staging.svc.cluster.local:8080"
         // RUN a performance test using eg. Gatling here
       }
