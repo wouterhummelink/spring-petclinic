@@ -5,14 +5,15 @@ metadata:
   name: spring-petclinic
   namespace: petclinic-staging
   labels:
-     app: spring-petclinic
-     lifecycle: staging
-     version: __VERSION__
+    app: spring-petclinic
+    lifecycle: staging
+    version: __VERSION__
 spec:
   selector:
     matchLabels:
       app: spring-petclinic
       lifecycle: staging
+      version: __VERSION__
   template:
     spec:
       containers:
