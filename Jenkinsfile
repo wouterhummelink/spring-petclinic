@@ -10,21 +10,21 @@ pipeline {
     stage("Build") {
       steps {
         script {
-          pom = readMavenPom('pom.xml')
+          pom = readMavenPom file: 'pom.xml'
         }
-        sh "mvn package -DskipTests"
+        sh "./mvnw package -DskipTests"
       }
     }
     stage("Test") {
       steps {
-        sh "mvn test"
+        sh "./mvnw test"
         junit "target/surefire-reports/*.xml"
       }
     }
     stage("Smoke test") {
       steps {
         // make sure it runs
-        sh "mvn spring-boot:start"
+        sh "./mvnw spring-boot:start"
       }
     }
     stage("Create docker image") {
