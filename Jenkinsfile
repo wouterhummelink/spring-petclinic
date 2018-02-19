@@ -1,6 +1,7 @@
 // vim: ft=groovy
 def pom = null
 def version = null
+def stagingPort = 32318
 pipeline {
   agent any //{
     //kubernetes {
@@ -40,13 +41,13 @@ pipeline {
       steps {
         // TODO: insert version number into deployment
         sh "sed 's/__VERSION__/${version}-${currentBuild.number}/' infra/staging/petclinic-deployment.yml | kubectl apply -f -" 
-        sh "kubectl rollout status -n petclinic-staging deploy/spring-petclinic"
+        sh "kubectl rollout status -n petclinic-staging deploy/spring-petclinic -w"
       }
     }
     stage("Test deployment in staging") {
       steps {
         
-        sh "curl http://petclinic-svc.petclinic-staging.svc.cluster.local:8080"
+        sh "curl http://petclinic-svc.petclinic-staging.svc.cluster.local:${stagingPort}"
         // RUN a performance test using eg. Gatling here
       }
     }

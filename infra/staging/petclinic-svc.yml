@@ -5,3 +5,12 @@ metadata:
   namespace: petclinic-staging
   name: petclinic-svc
 spec:
+  selector:
+    app: spring-petclinic
+    lifecycle: staging
+  type: NodePort
+  ports:
+    - name: http
+      protocol: TCP
+      targetPort: 8080
+      port: 8080
