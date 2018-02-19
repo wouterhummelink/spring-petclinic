@@ -39,7 +39,7 @@ pipeline {
     stage("Deploy to staging") {
       steps {
         // TODO: insert version number into deployment
-        sh "sed 's/__VERSION__/${version}-{currentBuild.number}/' infra/staging/petclinic-deployment.yml | kubectl apply -f -" 
+        sh "sed 's/__VERSION__/${version}-${currentBuild.number}/' infra/staging/petclinic-deployment.yml | kubectl apply -f -" 
         sh "kubectl rollout status -n petclinic-staging deploy/spring-petclinic"
       }
     }

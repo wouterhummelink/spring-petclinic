@@ -9,6 +9,10 @@ metadata:
      lifecycle: staging
      version: __VERSION__
 spec:
+  selector:
+    matchLabels:
+      app: spring-petclinic
+      lifecycle: staging
   template:
     spec:
       containers:
