@@ -1,3 +1,4 @@
+// vim: ft=groovy
 def pom = null
 pipeline {
   agent any //{
@@ -27,8 +28,9 @@ pipeline {
           def version = pom.getVersion()
           withEnv(["DOCKER_REGISTRY=docker.io","DOCKER_IMAGE=spring-petclinic", "POM_VERSION=${version}"]) {
             sh "sudo buildah bud -t ${DOCKER_IMAGE}:${POM_VERSION}-${JENKINS_BUILD} ."
-            withCredentials(credentialsId: "docker-login", usernameVariable: "DOCKER_USERNAME", passwordVariable: "DOCKER_PASSWORD"
-            sh 'sudo buildah push --creds="${DOCKER_USERNAME}:${DOCKER_PASSWORD}" ${DOCKER_IMAGE}:${POM_VERSION}-${JENKINS_BUILD} docker://${DOCKER_REGISTRY}/${DOCKER_USERNAME}/${DOCKER_IMAGE}:${POM_VERSION}-${JENKINS_BUILD}'
+            withCredentials(credentialsId: "docker-login", usernameVariable: "DOCKER_USERNAME", passwordVariable: "DOCKER_PASSWORD") {
+              sh 'sudo buildah push --creds="${DOCKER_USERNAME}:${DOCKER_PASSWORD}" ${DOCKER_IMAGE}:${POM_VERSION}-${JENKINS_BUILD} docker://${DOCKER_REGISTRY}/${DOCKER_USERNAME}/${DOCKER_IMAGE}:${POM_VERSION}-${JENKINS_BUILD}'
+            }
           }
         }
       }
