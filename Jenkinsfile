@@ -17,13 +17,15 @@ pipeline {
     }
     stage("Test") {
       steps {
-      sh "mvn test"
-      junit "target/surefire-reports/*.xml"
+        sh "mvn test"
+        junit "target/surefire-reports/*.xml"
+      }
     }
     stage("Smoke test") {
       steps {
-      // make sure it runs
-      sh "mvn spring-boot:start"
+        // make sure it runs
+        sh "mvn spring-boot:start"
+      }
     }
     stage("Create docker image") {
       steps {
