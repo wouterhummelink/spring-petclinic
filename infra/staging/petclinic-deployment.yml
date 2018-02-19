@@ -27,4 +27,4 @@ spec:
             protocol: TCP
             containerPort: 8080
       #volumes:
-  progressDeadlineSeconds:600  
+  progressDeadlineSeconds: 600  
