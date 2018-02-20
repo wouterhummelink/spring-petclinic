@@ -3,21 +3,21 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: spring-petclinic
-  namespace: petclinic-staging
+  namespace: petclinic-production
   labels:
     app: spring-petclinic
-    lifecycle: staging
+    lifecycle: production
     version: __VERSION__
 spec:
   selector:
     matchLabels:
       app: spring-petclinic
-      lifecycle: staging
+      lifecycle: production
   template:
     metadata:
       labels:
         app: spring-petclinic
-        lifecycle: staging
+        lifecycle: production
     spec:
       containers:
       - name: spring-petclinic

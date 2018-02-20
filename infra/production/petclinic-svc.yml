@@ -1,0 +1,16 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: petclinic-production
+  name: petclinic-svc
+spec:
+  selector:
+    app: spring-petclinic
+    lifecycle: production
+  type: NodePort
+  ports:
+    - name: http
+      protocol: TCP
+      targetPort: 8080
+      port: 8080
