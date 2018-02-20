@@ -47,4 +47,4 @@ spec:
       #volumes:
       #volumes:
   progressDeadlineSeconds: 600  
-    
+  revisionHistoryLimit: 2  
