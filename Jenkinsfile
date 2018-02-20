@@ -54,7 +54,7 @@ pipeline {
     stage("Deploy to prod") {
       steps {
         // TODO: insert version number into deployment
-        sh "kubectl apply -f infra/production/petclinic-deployment.yml"
+        sh "sed 's/__VERSION__/${version}-${currentBuild.number}/' infra/production/petclinic-deployment.yml | kubectl apply -f -" 
       }
     }
   }
