@@ -63,8 +63,8 @@ pipeline {
   }
   post {
     always {
-      archive include: "target/surefire-reports/*"
-      archive include: "target/*.jar"
+      archive includes: "target/surefire-reports/*"
+      archive includes: "target/*.jar"
       sh "ls -lR"
     }
   }
