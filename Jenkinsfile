@@ -31,7 +31,7 @@ pipeline {
     stage("Create docker image") {
       steps {
         script {
-          container "docker" {
+          container("docker") {
             withEnv(["DOCKER_REGISTRY=docker.io","DOCKER_IMAGE=spring-petclinic", "POM_VERSION=${version}"]) {
               sh 'docker build -t $${DOCKER_REGISTRY}/${DOCKER_USERNAME}/${DOCKER_IMAGE}:${POM_VERSION}-${BUILD_NUMBER} .'
               withCredentials([usernamePassword(credentialsId: "docker-login", usernameVariable: "DOCKER_USERNAME", passwordVariable: "DOCKER_PASSWORD")]) {
