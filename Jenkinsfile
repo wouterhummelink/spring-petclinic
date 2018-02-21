@@ -4,8 +4,7 @@ def version = null
 def stagingPort = 32318
 pipeline {
   agent { 
-    kubernetes {
-      label "jdk" 
+    label "jdk" 
     }
  }
   //{
