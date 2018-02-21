@@ -60,6 +60,11 @@ pipeline {
         sh "sed 's/__VERSION__/${version}-${currentBuild.number}/' infra/production/petclinic-deployment.yml | kubectl apply -f -" 
       }
     }
+    post {
+       always {
+         sh "ls -lR"
+       }
+    }
   }
   // mvn build
   // mvn test
