@@ -1,4 +1,4 @@
-FROM java:8
+FROM openjdk:8
 MAINTAINER Wouter Hummelink <wouter.hummelink@ordina.nl>
 
 ARG version=2.0.0

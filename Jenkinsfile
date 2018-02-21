@@ -3,7 +3,8 @@ def pom = null
 def version = null
 def stagingPort = 32318
 pipeline {
-  agent any //{
+  agent jdk
+  //{
     //kubernetes {
     // docker image maven:3.5
     // docker image docker with bind mount -or- buildah bud in privileged container
@@ -29,7 +30,7 @@ pipeline {
       steps {
         script {
           withEnv(["DOCKER_REGISTRY=docker.io","DOCKER_IMAGE=spring-petclinic", "POM_VERSION=${version}"]) {
-            sh 'sudo buildah bud -t ${DOCKER_IMAGE}:${POM_VERSION}-${BUILD_NUMBER} .'
+            sh 'sudo buildah -t ${DOCKER_IMAGE}:${POM_VERSION}-${BUILD_NUMBER} .'
             withCredentials([usernamePassword(credentialsId: "docker-login", usernameVariable: "DOCKER_USERNAME", passwordVariable: "DOCKER_PASSWORD")]) {
               sh 'sudo buildah push --creds="${DOCKER_USERNAME}:${DOCKER_PASSWORD}" ${DOCKER_IMAGE}:${POM_VERSION}-${BUILD_NUMBER} docker://${DOCKER_REGISTRY}/${DOCKER_USERNAME}/${DOCKER_IMAGE}:${POM_VERSION}-${BUILD_NUMBER}'
             }

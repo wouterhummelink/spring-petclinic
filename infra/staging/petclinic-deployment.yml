@@ -33,7 +33,7 @@ spec:
             httpHeaders:
             - name: X-Custom-Header
               value: Awesome
-          initialDelaySeconds: 3
+          initialDelaySeconds: 10
           periodSeconds: 3
         readinessProbe:
           httpGet:
@@ -42,7 +42,7 @@ spec:
             httpHeaders:
             - name: X-Custom-Header
               value: Awesome
-          initialDelaySeconds: 3
+          initialDelaySeconds: 10
           periodSeconds: 3
       #volumes:
       #volumes:
