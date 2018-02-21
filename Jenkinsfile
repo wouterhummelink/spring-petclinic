@@ -19,12 +19,12 @@ pipeline {
           pom = readMavenPom file: 'pom.xml'
           version = pom.getVersion()
         }
-        sh "./mvnw package -DskipTests"
+        sh "./mvnw -B package -DskipTests"
       }
     }
     stage("Test") {
       steps {
-        sh "./mvnw test"
+        sh "./mvnw -B test"
         junit "target/surefire-reports/*.xml"
       }
     }
