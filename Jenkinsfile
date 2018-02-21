@@ -3,9 +3,11 @@ def pom = null
 def version = null
 def stagingPort = 32318
 pipeline {
-  agent kubernetes {
-    label "jdk" 
-  }
+  agent { 
+    kubernetes {
+      label "jdk" 
+    }
+ }
   //{
     //kubernetes {
     // docker image maven:3.5
