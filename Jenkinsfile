@@ -24,7 +24,7 @@ pipeline {
     }
     stage("Test") {
       steps {
-        sh "./mvnw -B test"
+        sh "./mvnw -B -Xdebug -e -DforkCount=0 test"
         junit "target/surefire-reports/*.xml"
       }
     }
