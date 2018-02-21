@@ -65,6 +65,7 @@ pipeline {
     always {
       archive includes: "target/surefire-reports/*"
       archive includes: "target/*.jar"
+      archive includes: "/tmp/**"
       sh "ls -lR"
     }
   }
