@@ -26,21 +26,21 @@ pipeline {
       steps {
         sh "./mvnw -B -e -DforkCount=0 test"
         junit "target/surefire-reports/*.xml"
+        archive includes: "target/*.jar"
       }
     }
     stage("Create docker image") {
+      environment {
+        DOCKER = credentials("docker-login")
+        DOCKER_REGISTRY = "docker.io"
+        DOCKER_IMAGE = "spring-petclinic"
+      }
       steps {
-        script {
-          container("docker") {
-            withEnv(["DOCKER_REGISTRY=docker.io","DOCKER_IMAGE=spring-petclinic", "POM_VERSION=${version}"]) {
-              sh "echo '---- DOCKER BUILD'"
-              sh 'docker build -t $${DOCKER_REGISTRY}/${DOCKER_USERNAME}/${DOCKER_IMAGE}:${POM_VERSION}-${BUILD_NUMBER} .'
-              withCredentials([usernamePassword(credentialsId: "docker-login", usernameVariable: "DOCKER_USERNAME", passwordVariable: "DOCKER_PASSWORD")]) {
-                sh 'docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD} ${DOCKER_REGISTRY}'
-                sh 'docker push ${DOCKER_REGISTRY}/${DOCKER_USERNAME}/${DOCKER_IMAGE}:${POM_VERSION}-${BUILD_NUMBER}'
-              }
-            }
-          }
+        container("docker") {
+          sh "echo '---- DOCKER BUILD ----'"
+          sh 'docker build -t $${DOCKER_REGISTRY}/${DOCKER_USR}/${DOCKER_IMAGE}:${POM_VERSION}-${BUILD_NUMBER} .'
+          sh 'docker login -u ${DOCKER_USR} -p ${DOCKER_PSW} ${DOCKER_REGISTRY}'
+          sh 'docker push ${DOCKER_REGISTRY}/${DOCKER_USR}/${DOCKER_IMAGE}:${POM_VERSION}-${BUILD_NUMBER}'
         }
       }
     }
@@ -68,7 +68,6 @@ pipeline {
   post {
     always {
       archive includes: "target/surefire-reports/*"
-      archive includes: "target/*.jar"
       archive includes: "/tmp/**"
       sh "ls -lR"
     }
