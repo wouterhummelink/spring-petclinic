@@ -5,8 +5,7 @@ def stagingPort = 32318
 pipeline {
   agent { 
     label "jdk" 
-    }
- }
+  }
   //{
     //kubernetes {
     // docker image maven:3.5
