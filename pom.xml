@@ -236,7 +236,7 @@
     <repository>
       <id>spring-snapshots</id>
       <name>Spring Snapshots</name>
-      <url>https://repo.spring.io/snapshot</url>
+      <url>http://nexus.jenkins/repository/spring-snaphot</url>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
@@ -244,7 +244,7 @@
     <repository>
       <id>spring-milestones</id>
       <name>Spring Milestones</name>
-      <url>https://repo.spring.io/milestone</url>
+      <url>http://nexus.jenkins/repository/spring-milestones</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
@@ -260,7 +260,8 @@
     <pluginRepository>
       <id>spring-snapshots</id>
       <name>Spring Snapshots</name>
-      <url>https://repo.spring.io/snapshot</url>
+      <url>http://nexus.jenkins/repository/spring-snaphot</url>
+      <snapshots>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
@@ -268,7 +269,7 @@
     <pluginRepository>
       <id>spring-milestones</id>
       <name>Spring Milestones</name>
-      <url>https://repo.spring.io/milestone</url>
+      <url>http://nexus.jenkins/repository/spring-milestones</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
