@@ -4,7 +4,18 @@ def version = null
 def stagingPort = 32318
 pipeline {
   agent { 
-    label "jdk" 
+    kubernetes {
+      cloud "kubernetes"
+      label "builder"
+      inheritFrom "jdk"
+      serviceAccount "jenkins"
+      containerTemplate {
+        name "jdk"
+        image "whummelink/petclinic-build:2018.02.22"
+        ttyEnabled true
+        command "cat"
+      }
+    } 
   }
   //{
     //kubernetes {
@@ -19,18 +30,14 @@ pipeline {
           pom = readMavenPom file: 'pom.xml'
           version = pom.getVersion()
         }
-        container("jdk") {
-          sh "./mvnw -B package -DskipTests"
-        }
+        sh "./mvnw -B package -DskipTests"
       }
     }
     stage("Test") {
       steps {
-        container("jdk") {
-          sh "./mvnw -B -e -DforkCount=0 test"
-          junit "target/surefire-reports/*.xml"
-          archive includes: "target/*.jar"
-        }
+        sh "./mvnw -B -e -DforkCount=0 test"
+        junit "target/surefire-reports/*.xml"
+        archive includes: "target/*.jar"
       }
     }
     stage("Create docker image") {
@@ -41,21 +48,17 @@ pipeline {
         POM_VERSION = "${version}"
       }
       steps {
-        container("jdk") {
-          sh "echo '---- DOCKER BUILD ----'"
-          sh 'docker build -t ${DOCKER_REGISTRY}/${DOCKER_USR}/${DOCKER_IMAGE}:${POM_VERSION}-${BUILD_NUMBER} .'
-          sh 'docker login -u ${DOCKER_USR} -p ${DOCKER_PSW} ${DOCKER_REGISTRY}'
-          sh 'docker push ${DOCKER_REGISTRY}/${DOCKER_USR}/${DOCKER_IMAGE}:${POM_VERSION}-${BUILD_NUMBER}'
-        }
+        sh "echo '---- DOCKER BUILD ----'"
+        sh 'docker build -t ${DOCKER_REGISTRY}/${DOCKER_USR}/${DOCKER_IMAGE}:${POM_VERSION}-${BUILD_NUMBER} .'
+        sh 'docker login -u ${DOCKER_USR} -p ${DOCKER_PSW} ${DOCKER_REGISTRY}'
+        sh 'docker push ${DOCKER_REGISTRY}/${DOCKER_USR}/${DOCKER_IMAGE}:${POM_VERSION}-${BUILD_NUMBER}'
       }
     }
     stage("Deploy to staging") {
       steps {
-        container("jdk") {
         // TODO: insert version number into deployment
-          sh "sed 's/__VERSION__/${version}-${currentBuild.number}/' infra/staging/petclinic-deployment.yml | kubectl apply -f -" 
-          sh "kubectl rollout status -n petclinic-staging deploy/spring-petclinic -w"
-        }
+        sh "sed 's/__VERSION__/${version}-${currentBuild.number}/' infra/staging/petclinic-deployment.yml | kubectl apply -f -" 
+        sh "kubectl rollout status -n petclinic-staging deploy/spring-petclinic -w"
       }
     }
     stage("Test deployment in staging") {
@@ -67,9 +70,7 @@ pipeline {
     stage("Deploy to prod") {
       steps {
         // TODO: insert version number into deployment
-        container("jdk") {
-          sh "sed 's/__VERSION__/${version}-${currentBuild.number}/' infra/production/petclinic-deployment.yml | kubectl apply -f -" 
-        }
+        sh "sed 's/__VERSION__/${version}-${currentBuild.number}/' infra/production/petclinic-deployment.yml | kubectl apply -f -" 
       }
     }
   }
