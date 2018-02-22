@@ -6,7 +6,7 @@ ENV VERSION=${version}
 ADD target/spring-petclinic-${version}.jar /spring-petclinic-${version}.jar
 ADD infra/entrypoint.sh /entrypoint.sh
 
-EXPOSE [8080]
+EXPOSE 8080
 
 ENTRYPOINT ["/entrypoint.sh"]
 
