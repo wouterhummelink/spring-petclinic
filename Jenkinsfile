@@ -21,7 +21,7 @@ pipeline {
         }
         container("jdk") {
           sh "./mvnw -B package -DskipTests"
-        {
+        }
       }
     }
     stage("Test") {
