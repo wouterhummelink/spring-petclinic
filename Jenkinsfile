@@ -38,7 +38,7 @@ pipeline {
         DOCKER = credentials("docker-login")
         DOCKER_REGISTRY = "docker.io"
         DOCKER_IMAGE = "spring-petclinic"
-        POM_VERSION = version
+        POM_VERSION = "${version}"
       }
       steps {
         container("jdk") {
