@@ -231,7 +231,7 @@
     <repository>
       <id>central</id>
       <name>Internal Mirror of Central Repository</name>
-      <url>http://nexus.jenkins/repository/maven-public/
+      <url>http://nexus.jenkins/repository/maven-public/</url>
     </repository>
     <repository>
       <id>spring-snapshots</id>
@@ -255,7 +255,7 @@
     <pluginRepository>
       <id>central</id>
       <name>Internal Mirror of Central Repository</name>
-      <url>http://nexus.jenkins/repository/maven-public/
+      <url>http://nexus.jenkins/repository/maven-public/</url>
     </pluginRepository>
     <pluginRepository>
       <id>spring-snapshots</id>
