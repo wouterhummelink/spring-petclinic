@@ -50,6 +50,7 @@ pipeline {
       }
       steps {
         sh "echo '---- DOCKER BUILD ----'"
+        sh "env"
         sh 'docker build -t ${DOCKER_REGISTRY}/${DOCKER_USR}/${DOCKER_IMAGE}:${POM_VERSION}-${BUILD_NUMBER} .'
         sh 'docker login -u ${DOCKER_USR} -p ${DOCKER_PSW} ${DOCKER_REGISTRY}'
         sh 'docker push ${DOCKER_REGISTRY}/${DOCKER_USR}/${DOCKER_IMAGE}:${POM_VERSION}-${BUILD_NUMBER}'
