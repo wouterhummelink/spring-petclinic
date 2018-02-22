@@ -52,9 +52,9 @@ pipeline {
         withEnv(["DOCKER_REGISTRY=docker.io","DOCKER_IMAGE=sprint-petclinic"]) {
           sh "echo '---- DOCKER BUILD ----'"
           sh "echo ${env.POM_VERSION}"
-          sh 'docker build -t ${DOCKER_REGISTRY}/${DOCKER_USR}/${DOCKER_IMAGE}:${POM_VERSION}-${BUILD_NUMBER} .'
-          sh 'docker login -u ${DOCKER_USR} -p ${DOCKER_PSW} ${DOCKER_REGISTRY}'
-          sh 'docker push ${DOCKER_REGISTRY}/${DOCKER_USR}/${DOCKER_IMAGE}:${POM_VERSION}-${BUILD_NUMBER}'
+          sh "docker build -t ${env.DOCKER_REGISTRY}/${env.DOCKER_USR}/${env.DOCKER_IMAGE}:${env.POM_VERSION}-${env.BUILD_NUMBER} ."
+          sh "docker login -u ${env.DOCKER_USR} -p ${env.DOCKER_PSW} ${env.DOCKER_REGISTRY}"
+          sh "docker push ${env.DOCKER_REGISTRY}/${env.DOCKER_USR}/${env.DOCKER_IMAGE}:${env.POM_VERSION}-${env.BUILD_NUMBER}"
         }
       }
     }
