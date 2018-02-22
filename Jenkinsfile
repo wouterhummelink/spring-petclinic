@@ -49,13 +49,9 @@ pipeline {
         POM_VERSION = "${version}"
       }
       steps {
-        withEnv(["DOCKER_REGISTRY=docker.io","DOCKER_IMAGE=sprint-petclinic"]) {
-          sh "echo '---- DOCKER BUILD ----'"
-          sh "echo ${env.POM_VERSION}"
-          sh "docker build -t ${env.DOCKER_REGISTRY}/${env.DOCKER_USR}/${env.DOCKER_IMAGE}:${env.POM_VERSION}-${env.BUILD_NUMBER} ."
-          sh "docker login -u ${env.DOCKER_USR} -p ${env.DOCKER_PSW} ${env.DOCKER_REGISTRY}"
-          sh "docker push ${env.DOCKER_REGISTRY}/${env.DOCKER_USR}/${env.DOCKER_IMAGE}:${env.POM_VERSION}-${env.BUILD_NUMBER}"
-        }
+        sh "docker build -t ${env.DOCKER_REGISTRY}/${env.DOCKER_USR}/${env.DOCKER_IMAGE}:${env.POM_VERSION}-${env.BUILD_NUMBER} ."
+        sh "docker login -u ${env.DOCKER_USR} -p ${env.DOCKER_PSW} ${env.DOCKER_REGISTRY}"
+        sh "docker push ${env.DOCKER_REGISTRY}/${env.DOCKER_USR}/${env.DOCKER_IMAGE}:${env.POM_VERSION}-${env.BUILD_NUMBER}"
       }
     }
     stage("Deploy to staging") {
