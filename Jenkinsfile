@@ -7,7 +7,7 @@ pipeline {
     kubernetes {
       cloud "kubernetes"
       label "builder"
-      inheritFrom "jdk"
+      inheritFrom "docker"
       serviceAccount "jenkins"
       containerTemplate {
         name "jdk"
