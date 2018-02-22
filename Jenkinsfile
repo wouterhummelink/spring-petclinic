@@ -36,7 +36,7 @@ pipeline {
     }
     stage("Test") {
       steps {
-        sh "touch target/test.jar #./mvnw -B -e -DforkCount=0 test"
+        sh "mkdir target && touch target/spring-petclinic-2.0.0.jar #./mvnw -B -e -DforkCount=0 test"
         junit "target/surefire-reports/*.xml"
         archive includes: "target/*.jar"
       }
