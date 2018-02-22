@@ -13,7 +13,8 @@ pipeline {
         name "jdk"
         image "whummelink/petclinic-build:2018.02.22"
         ttyEnabled true
-        command "/bin/cat"
+        command "/bin/sh -c"
+        args "cat"
       }
     } 
   }
