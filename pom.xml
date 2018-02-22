@@ -262,7 +262,6 @@
       <name>Spring Snapshots</name>
       <url>http://nexus.jenkins/repository/spring-snaphot</url>
       <snapshots>
-      <snapshots>
         <enabled>true</enabled>
       </snapshots>
     </pluginRepository>
