@@ -75,7 +75,7 @@ pipeline {
         sh "kubectl rollout status -n petclinic-production deploy/spring-petclinic -w"
       }
     }
-    stage("Test deployment in staging") {
+    stage("Test deployment in production") {
       steps {
         sh "curl http://petclinic-svc.petclinic-production.svc.cluster.local:${productionPort}"
         // RUN a performance test using eg. Gatling here
