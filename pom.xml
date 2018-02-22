@@ -229,6 +229,11 @@
 
   <repositories>
     <repository>
+      <id>central</id>
+      <name>Internal Mirror of Central Repository</name>
+      <url>http://nexus.jenkins/repository/maven-public/
+    </repository>
+    <repository>
       <id>spring-snapshots</id>
       <name>Spring Snapshots</name>
       <url>https://repo.spring.io/snapshot</url>
@@ -247,6 +252,11 @@
   </repositories>
 
   <pluginRepositories>
+    <pluginRepository>
+      <id>central</id>
+      <name>Internal Mirror of Central Repository</name>
+      <url>http://nexus.jenkins/repository/maven-public/
+    </pluginRepository>
     <pluginRepository>
       <id>spring-snapshots</id>
       <name>Spring Snapshots</name>
