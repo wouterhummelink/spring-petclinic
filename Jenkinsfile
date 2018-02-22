@@ -72,6 +72,13 @@ pipeline {
       steps {
         // TODO: insert version number into deployment
         sh "sed 's/__VERSION__/${version}-${currentBuild.number}/' infra/production/petclinic-deployment.yml | kubectl apply -f -" 
+        sh "kubectl rollout status -n petclinic-production deploy/spring-petclinic -w"
+      }
+    }
+    stage("Test deployment in staging") {
+      steps {
+        sh "curl http://petclinic-svc.petclinic-production.svc.cluster.local:${productionPort}"
+        // RUN a performance test using eg. Gatling here
       }
     }
   }
