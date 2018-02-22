@@ -1,7 +1,8 @@
 // vim: ft=groovy
 def pom = null
 def version = null
-def stagingPort = 32318
+def stagingPort = 8080
+def productionPort = 8080
 pipeline {
   agent { 
     kubernetes {
