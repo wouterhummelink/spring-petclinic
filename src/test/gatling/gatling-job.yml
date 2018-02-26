@@ -1,0 +1,28 @@
+---
+kind: Job
+apiVersion: batch/v1
+metadata:
+  name: gatling
+  namespace: jenkins
+spec:
+  template:
+    spec:
+      containers:
+      - name: gatling
+        image: denvazh/gatling:2.3.0
+        args: [-s, petclinicsimulation]
+        volumeMounts:
+        - name: gatling-user-files
+          mountPath: /opt/gatling/user-files
+      volumes:
+        - name: gatling-user-files
+          emptyDir: {}
+      restartPolicy: Never
+      initContainers:
+      - name: tools
+        image: fedora/tools
+        command: ["/bin/bash","-c"]
+        args: ["pwd && git clone https://github.com/wouterhummelink/spring-petclinic.git /tmp/spring-petclinic && rsync -alvx /tmp/spring-petclinic/src/test/gatling/user-files/ /opt/gatling/user-files"]
+        volumeMounts:
+        - name: gatling-user-files
+          mountPath: /opt/gatling/user-files
