@@ -229,9 +229,14 @@
 
   <repositories>
     <repository>
+      <id>central</id>
+      <name>Internal Mirror of Central Repository</name>
+      <url>http://nexus.jenkins/repository/maven-public/</url>
+    </repository>
+    <repository>
       <id>spring-snapshots</id>
       <name>Spring Snapshots</name>
-      <url>http://repo.spring.io/snapshot</url>
+      <url>http://nexus.jenkins/repository/spring-snaphot</url>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
@@ -239,7 +244,7 @@
     <repository>
       <id>spring-milestones</id>
       <name>Spring Milestones</name>
-      <url>http://repo.spring.io/milestone</url>
+      <url>http://nexus.jenkins/repository/spring-milestones</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
@@ -248,9 +253,14 @@
 
   <pluginRepositories>
     <pluginRepository>
+      <id>central</id>
+      <name>Internal Mirror of Central Repository</name>
+      <url>http://nexus.jenkins/repository/maven-public/</url>
+    </pluginRepository>
+    <pluginRepository>
       <id>spring-snapshots</id>
       <name>Spring Snapshots</name>
-      <url>http://repo.spring.io/snapshot</url>
+      <url>http://nexus.jenkins/repository/spring-snaphot</url>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
@@ -258,7 +268,7 @@
     <pluginRepository>
       <id>spring-milestones</id>
       <name>Spring Milestones</name>
-      <url>http://repo.spring.io/milestone</url>
+      <url>http://nexus.jenkins/repository/spring-milestones</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
