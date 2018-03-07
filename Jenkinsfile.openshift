@@ -39,7 +39,7 @@ pipeline {
     stage("Create docker image") {
       steps {
         // openshift build Dockerfile?
-        openshiftBuild bldCfg: 'spring-petclinic-build-image', checkForTriggeredDeployments: 'false', commitID: "${env.GIT_COMMIT}", showBuildLogs: 'true', verbose: 'false'
+        openshiftBuild bldCfg: 'spring-petclinic-build-image', checkForTriggeredDeployments: 'false', showBuildLogs: 'true', verbose: 'false'
       }
     }
     stage("Deploy to staging") {
