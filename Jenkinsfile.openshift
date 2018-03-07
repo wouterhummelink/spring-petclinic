@@ -28,12 +28,18 @@ pipeline {
         sh "./mvnw -B -e -DforkCount=0 test"
         junit "target/surefire-reports/*.xml"
         archive includes: "target/*.jar"
+        script {
+          def sonarPath = tool "sonarqube-scanner"
+          withSonarQubeEnv("sonar") {
+            sh "${sonarPath}/bin/sonar-scanner"
+          }
+        }
       }
     }
     stage("Create docker image") {
       steps {
         // openshift build Dockerfile?
-        sh "echo INSERT_BUILD_STEP"
+        openshiftBuild bldCfg: 'spring-petclinic-image-build', checkForTriggeredDeployments: 'false', commitID: "${env.GIT_COMMIT}", showBuildLogs: 'true', verbose: 'false'
       }
     }
     stage("Deploy to staging") {
