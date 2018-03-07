@@ -38,14 +38,16 @@ pipeline {
     }
     stage("Create docker image") {
       steps {
-        // openshift build Dockerfile?
+        // openshift build using Dockerfile and binary source from build would be more efficient?
         openshiftBuild bldCfg: 'spring-petclinic-build-image', checkForTriggeredDeployments: 'false', showBuildLogs: 'true', verbose: 'false'
+        openshiftTag srcStream: "spring-petclinic", srcTag: "latest", destinationStream: "spring-petclinic", destinationTag: "${version}-${currentBuild.number}"
       }
     }
     stage("Deploy to staging") {
       steps {
-        openshiftTag srcStream: "spring-petclinic", srcTag: "latest", destinationStream: "spring-petClinic", destinationTag: "staging"
-
+        // Use a numbered tag as the source for both staging and prod
+        openshiftTag srcStream: "spring-petclinic", srcTag: "${version}-${currentBuild.number}", destinationStream: "spring-petClinic", destinationTag: "staging"
+        openshiftDeploy namespace: "myproject", depCfg: "spring-petclinic-staging"
         // TODO: insert version number into deployment
         //sh "sed 's/__VERSION__/${version}-${currentBuild.number}/' infra/staging/petclinic-deployment.yml | kubectl apply -f -" 
         //sh "kubectl rollout status -n petclinic-staging deploy/spring-petclinic -w"
@@ -53,15 +55,14 @@ pipeline {
     }
     stage("Test deployment in staging") {
       steps {
-        sh "curl http://petclinic-svc.petclinic-staging.svc.cluster.local:${stagingPort}"
+        sh "curl http://spring-petclinic-staging.myproject.svc:${stagingPort}"
         // RUN a performance test using eg. Gatling here
       }
     }
     stage("Deploy to prod") {
       steps {
-        // TODO: insert version number into deployment
-        sh "sed 's/__VERSION__/${version}-${currentBuild.number}/' infra/production/petclinic-deployment.yml | kubectl apply -f -" 
-        sh "kubectl rollout status -n petclinic-production deploy/spring-petclinic -w"
+        openshiftTag srcStream: "spring-petclinic", srcTag: "${version}-${currentBuild.number}", destinationStream: "spring-petClinic", destinationTag: "production"
+        openshiftDeploy namespace: "myproject", depCfg: "spring-petclinic-production"
       }
     }
     stage("Test deployment in production") {
@@ -73,8 +74,6 @@ pipeline {
   }
   post {
     always {
-      archive includes: "target/surefire-reports/*"
-      archive includes: "/tmp/**"
       sh "ls -lR"
     }
   }
