@@ -44,9 +44,11 @@ pipeline {
     }
     stage("Deploy to staging") {
       steps {
+        openshiftTag srcStream: "spring-petclinic", srcTag: "latest", destinationStream: "spring-petClinic", destinationTag: "staging"
+
         // TODO: insert version number into deployment
-        sh "sed 's/__VERSION__/${version}-${currentBuild.number}/' infra/staging/petclinic-deployment.yml | kubectl apply -f -" 
-        sh "kubectl rollout status -n petclinic-staging deploy/spring-petclinic -w"
+        //sh "sed 's/__VERSION__/${version}-${currentBuild.number}/' infra/staging/petclinic-deployment.yml | kubectl apply -f -" 
+        //sh "kubectl rollout status -n petclinic-staging deploy/spring-petclinic -w"
       }
     }
     stage("Test deployment in staging") {
