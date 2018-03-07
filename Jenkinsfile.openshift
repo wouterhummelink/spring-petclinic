@@ -40,13 +40,13 @@ pipeline {
       steps {
         // openshift build using Dockerfile and binary source from build would be more efficient?
         openshiftBuild bldCfg: 'spring-petclinic-build-image', checkForTriggeredDeployments: 'false', showBuildLogs: 'true', verbose: 'false'
-        openshiftTag srcStream: "spring-petclinic", srcTag: "latest", destinationStream: "spring-petclinic", destinationTag: "${version}-${currentBuild.number}"
+        openshiftTag srcStream: "spring-petclinic", srcTag: "latest", destStream: "spring-petclinic", destTag: "${version}-${currentBuild.number}"
       }
     }
     stage("Deploy to staging") {
       steps {
         // Use a numbered tag as the source for both staging and prod
-        openshiftTag srcStream: "spring-petclinic", srcTag: "${version}-${currentBuild.number}", destinationStream: "spring-petClinic", destinationTag: "staging"
+        openshiftTag srcStream: "spring-petclinic", srcTag: "${version}-${currentBuild.number}", destStream: "spring-petClinic", destTag: "staging"
         openshiftDeploy namespace: "myproject", depCfg: "spring-petclinic-staging"
         // TODO: insert version number into deployment
         //sh "sed 's/__VERSION__/${version}-${currentBuild.number}/' infra/staging/petclinic-deployment.yml | kubectl apply -f -" 
@@ -61,7 +61,7 @@ pipeline {
     }
     stage("Deploy to prod") {
       steps {
-        openshiftTag srcStream: "spring-petclinic", srcTag: "${version}-${currentBuild.number}", destinationStream: "spring-petClinic", destinationTag: "production"
+        openshiftTag srcStream: "spring-petclinic", srcTag: "${version}-${currentBuild.number}", destStream: "spring-petClinic", destTag: "production"
         openshiftDeploy namespace: "myproject", depCfg: "spring-petclinic-production"
       }
     }
