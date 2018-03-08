@@ -30,7 +30,7 @@ pipeline {
         archive includes: "target/*.jar"
         script {
           def sonarPath = tool "sonarqube-scanner"
-          withSonarQubeEnv("sonar") {
+          withSonarQubeEnv("sonarqube") {
             sh "${sonarPath}/bin/sonar-scanner"
           }
         }
