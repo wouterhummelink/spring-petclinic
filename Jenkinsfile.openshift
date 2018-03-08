@@ -67,7 +67,7 @@ pipeline {
     }
     stage("Test deployment in production") {
       steps {
-        sh "curl http://petclinic-svc.petclinic-production.svc.cluster.local:${productionPort}"
+        sh "curl http://spring-petclinic-production.myproject.svc:${productionPort}"
         // RUN a performance test using eg. Gatling here
       }
     }
