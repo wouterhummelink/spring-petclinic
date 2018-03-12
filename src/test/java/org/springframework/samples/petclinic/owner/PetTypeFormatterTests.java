@@ -62,7 +62,7 @@ public class PetTypeFormatterTests {
     private List<PetType> makePetTypes() {
         List<PetType> petTypes = new ArrayList<>();
         petTypes.add(new PetType() {
-            {
+			{
                 setName("Dog");
             }
         });
