@@ -10,10 +10,13 @@
             "group": "build"
         },
         {
-            "label": "test",
+            "label": "package",
             "type": "shell",
-            "command": "./mvnw -B test",
-            "group": "test"
+            "command": "./mvnw -B package",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         }
     ]
 }
